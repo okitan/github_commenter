@@ -1,0 +1,3 @@
+module GithubCommenter
+  # Your code goes here...
+end
