@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "addressable"
+  spec.add_dependency "git"
   spec.add_dependency "git_diff_parser"
   spec.add_dependency "ltsv"
   spec.add_dependency "octokit"

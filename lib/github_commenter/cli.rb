@@ -1,8 +1,10 @@
 require "github_commenter"
 
-require "addressable/template"
-require "git_diff_parser"
 require "thor"
+
+require "addressable/template"
+require "git"
+require "git_diff_parser"
 require "octokit"
 
 module GithubCommenter
@@ -43,7 +45,7 @@ module GithubCommenter
     protected
     def post_pr_comments(comments)
       base = pr_info.base.sha
-      head = `git log -n 1 --pretty=%H`.chomp
+      head = ::Git::Log.new(::Git.open("."), 1).last.sha
 
       diff = GitDiffParser.parse(`git diff #{base}`)
 
@@ -75,7 +77,7 @@ module GithubCommenter
       after ||= pr_info.base.sha
 
       # XXX: commandline injection risk
-      diff = GitDiffParser.parse(`git diff #{after} #{_until}`) # when _until is nil it is treated as HEAD
+      diff = GitDiffParser.parse(::Git::Diff.new(::Git.open("."), after, _until).patch)
 
       comments.select do |comment|
         if comment[:file]
