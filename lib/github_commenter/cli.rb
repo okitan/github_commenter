@@ -102,7 +102,7 @@ module GithubCommenter
 
     def parse_options
       comments = if stdin?
-        parse_comments(File.read($stdin))
+        parse_comments($stdin.read)
       else
         if options[:message] && options[:file] && options[:line]
           [ { message: options[:message], file: options[:file], line: options[:line] } ]
